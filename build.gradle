@@ -1,0 +1,62 @@
+buildscript {
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        maven { url System.getenv("ARTIFACTORY_URL_EXPOSED") }
+    }
+
+    dependencies {
+        classpath (group: 'com.spidasoftware', name:'releaseNotes', version:'0.3-SNAPSHOT', changing:true)
+    }
+}
+
+plugins {
+    id 'groovy'
+    id 'java'
+    id 'maven'
+    id 'org.openjfx.javafxplugin' version '0.0.9'
+}
+
+repositories {
+    mavenCentral()
+    maven { url System.getenv("ARTIFACTORY_URL_EXPOSED") }
+}
+
+uploadArchives {
+    repositories.mavenDeployer {
+        repository(url: System.getenv("ARTIFACTORY_URL_EXPOSED")) {
+            authentication(userName: System.getenv("ARTIFACTORY_USERNAME"), password: System.getenv("ARTIFACTORY_PASSWORD"))
+        }
+    }
+}
+
+sourceCompatibility = 11
+targetCompatibility = 11
+
+group 'com.spidasoftware'
+version '1.0.0-SNAPSHOT'
+
+String springVersion = "4.2.6.RELEASE"
+
+dependencies {
+    compile group: 'org.codehaus.groovy', name: 'groovy-all', version: '2.4.15'
+    compile group: 'log4j', name: 'log4j', version: '1.2.15'
+    compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.5'
+    compile group: 'commons-beanutils', name: 'commons-beanutils', version: '1.9.3'
+    compile group: 'org.springframework', name: 'spring-context', version:springVersion
+    compile group: 'org.slf4j', name:'slf4j-log4j12', version: '1.7.22'
+
+    testCompile group: 'org.objenesis', name: 'objenesis', version: '2.6'
+    testCompile('org.spockframework:spock-core:1.2-groovy-2.4'){
+        exclude(module: 'groovy-all')
+    }
+    testRuntime('cglib:cglib-nodep:3.3.0')  // so spock can create mocks
+}
+
+javafx {
+    version ="15.0.1"
+    modules = [ 'javafx.controls', 'javafx.swing', 'javafx.fxml', 'javafx.graphics' ]
+}
+
+test.reports.html.destination = testReportDir // build/reports/tests
+test.reports.junitXml.destination = testResultsDir // build/test-results
