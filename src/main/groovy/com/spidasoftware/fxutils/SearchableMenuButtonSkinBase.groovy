@@ -4,7 +4,7 @@ import com.sun.javafx.scene.control.LabeledImpl
 import com.sun.javafx.scene.control.behavior.MenuButtonBehaviorBase
 import com.sun.javafx.util.Utils
 import groovy.transform.CompileStatic
-import groovy.util.logging.Log4j
+import groovy.util.logging.Slf4j
 import javafx.beans.property.ReadOnlyProperty
 import javafx.collections.FXCollections
 import javafx.collections.ListChangeListener
@@ -49,7 +49,7 @@ import java.util.function.Predicate
  *
  * A lot of the popup logic is copied and modified from {@link javafx.scene.control.skin.ComboBoxPopupControl}.
  */
-@Log4j
+@Slf4j
 @CompileStatic
 abstract class SearchableMenuButtonSkinBase<C extends MenuButton, B extends MenuButtonBehaviorBase<C>> extends SkinBase<C> {
 

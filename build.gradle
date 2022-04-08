@@ -34,18 +34,17 @@ sourceCompatibility = 11
 targetCompatibility = 11
 
 group 'com.spidasoftware'
-version '1.0.0-SNAPSHOT'
+version '1.0.1-SNAPSHOT'
 
 String springVersion = "4.2.6.RELEASE"
 
 dependencies {
     compile group: 'org.codehaus.groovy', name: 'groovy-all', version: '2.4.15'
-    compile group: 'log4j', name: 'log4j', version: '1.2.15'
     compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.5'
     compile group: 'commons-beanutils', name: 'commons-beanutils', version: '1.9.3'
     compile group: 'org.springframework', name: 'spring-context', version:springVersion
-    compile group: 'org.slf4j', name:'slf4j-log4j12', version: '1.7.22'
-
+    compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.36'
+    compile group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.11'
     testCompile group: 'org.objenesis', name: 'objenesis', version: '2.6'
     testCompile('org.spockframework:spock-core:1.2-groovy-2.4'){
         exclude(module: 'groovy-all')

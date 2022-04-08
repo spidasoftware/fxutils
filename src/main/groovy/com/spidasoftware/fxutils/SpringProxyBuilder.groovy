@@ -2,7 +2,7 @@ package com.spidasoftware.fxutils
 
 import com.sun.javafx.fxml.BeanAdapter  // jfx11 this requires opening javafx.fxml/com.sun.javafx.fxml
 import groovy.transform.CompileStatic
-import groovy.util.logging.Log4j
+import groovy.util.logging.Slf4j
 import javafx.beans.NamedArg
 import javafx.util.Builder
 import org.apache.commons.beanutils.PropertyUtils
@@ -22,7 +22,7 @@ import java.lang.reflect.Constructor
  * Because of groovy weirdness, this means, we have to use this.@property or risk accidentally putting extra things in
  * the map
  */
-@Log4j
+@Slf4j
 @CompileStatic
 class SpringProxyBuilder<T> extends HashMap<String, Object> implements Builder<T> {
 
@@ -98,7 +98,7 @@ class SpringProxyBuilder<T> extends HashMap<String, Object> implements Builder<T
 			}
 			return object
 		} catch (Exception ex) {
-			this.@log.error(ex, ex)
+			this.@log.error(ex.toString(), ex)
 			return null
 		}
 	}
