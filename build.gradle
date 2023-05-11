@@ -49,17 +49,17 @@ version '1.0.2-SNAPSHOT'
 String springVersion = "4.2.6.RELEASE"
 
 dependencies {
-    implementation group: 'org.codehaus.groovy', name: 'groovy-all', version: '2.4.15'
+    implementation group: 'org.apache.groovy', name: 'groovy-all', version: '4.0.12'
     implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.5'
     implementation group: 'commons-beanutils', name: 'commons-beanutils', version: '1.9.3'
     implementation group: 'org.springframework', name: 'spring-context', version:springVersion
     implementation group: 'org.slf4j', name: 'slf4j-api', version: '1.7.36'
     implementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.11'
     testImplementation group: 'org.objenesis', name: 'objenesis', version: '2.6'
-    testImplementation('org.spockframework:spock-core:1.2-groovy-2.4'){
+    testImplementation('org.spockframework:spock-core:2.3-groovy-4.0'){
         exclude(module: 'groovy-all')
     }
-    testRuntimeOnly('cglib:cglib-nodep:3.3.0')  // so spock can create mocks
+    testRuntimeOnly('net.bytebuddy:byte-buddy:1.14.2')  // so spock can create mocks
 }
 
 javafx {
