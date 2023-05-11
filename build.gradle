@@ -14,7 +14,7 @@ plugins {
     id 'groovy'
     id 'java-library'
     id 'maven-publish'
-    id 'org.openjfx.javafxplugin' version '0.0.9'
+    id 'org.openjfx.javafxplugin' version '0.0.14'
 }
 
 repositories {
@@ -63,7 +63,7 @@ dependencies {
 }
 
 javafx {
-    version ="15.0.1"
+    version ="20.0.1"
     modules = [ 'javafx.controls', 'javafx.swing', 'javafx.fxml', 'javafx.graphics' ]
 }
 
