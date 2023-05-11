@@ -92,7 +92,7 @@ class SpringProxyBuilder<T> extends HashMap<String, Object> implements Builder<T
 
 			// set the properties we have left after construction.
 			providedProperties.each {String property ->
-				Class<? extends Void> propertyType = getTypeForProperty(object, property)
+				Class<? extends Object> propertyType = getTypeForProperty(object, property)
 				Object propertyValue = get(property)
 				object[property] = BeanAdapter.coerce(propertyValue, propertyType)
 			}
