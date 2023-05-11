@@ -12,8 +12,8 @@ buildscript {
 
 plugins {
     id 'groovy'
-    id 'java'
-    id 'maven'
+    id 'java-library'
+    id 'maven-publish'
     id 'org.openjfx.javafxplugin' version '0.0.9'
 }
 
@@ -22,12 +22,22 @@ repositories {
     maven { url System.getenv("ARTIFACTORY_URL_EXPOSED") }
 }
 
-uploadArchives {
-    repositories.mavenDeployer {
-        repository(url: System.getenv("ARTIFACTORY_URL_EXPOSED")) {
-            authentication(userName: System.getenv("ARTIFACTORY_USERNAME"), password: System.getenv("ARTIFACTORY_PASSWORD"))
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
         }
     }
+
+    repositories {
+		maven {
+			url "${System.getenv('ARTIFACTORY_URL_BASE')}/libs-${project.version.endsWith('-SNAPSHOT') ? 'snapshot' : 'release' }-local"
+			credentials {
+				username = System.getenv('ARTIFACTORY_USERNAME')
+				password = System.getenv('ARTIFACTORY_PASSWORD')
+			}
+		}
+	}
 }
 
 sourceCompatibility = 11
