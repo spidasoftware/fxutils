@@ -131,7 +131,7 @@ abstract class SearchableMenuButtonSkinBase<C extends MenuButton, B extends Menu
 		combinedList.addAll(defaultMenuItems)
 		combinedList.addAll(items)
 
-		defaultMenuItems.addListener({ Change<MenuItem> change ->
+		defaultMenuItems.addListener({ Change<? extends MenuItem> change ->
 			while(change.next()) {
 				if(change.wasRemoved()) {
 					combinedList.removeAll(change.removed)
@@ -142,7 +142,7 @@ abstract class SearchableMenuButtonSkinBase<C extends MenuButton, B extends Menu
 			}
 									 } as ListChangeListener)
 
-		items.addListener({ Change<MenuItem> change ->
+		items.addListener({ Change<? extends MenuItem> change ->
 			while(change.next()) {
 				if(change.wasRemoved()) {
 					combinedList.removeAll(change.removed)
@@ -151,19 +151,19 @@ abstract class SearchableMenuButtonSkinBase<C extends MenuButton, B extends Menu
 					combinedList.addAll(defaultMenuItems.size() + change.from, change.addedSubList)
 				}
 			}
-						  } as ListChangeListener)
+						  } as ListChangeListener<MenuItem>)
 
 		// ---- Copied from MenuButtonSkinBase -------------------------------------------------------------------------
 		if (control.getOnMousePressed() == null) {
 			control.addEventHandler(MouseEvent.MOUSE_PRESSED, { MouseEvent e ->
 				getBehavior().mousePressed(e, behaveLikeButton)
-			} as EventHandler)
+			} as EventHandler<MouseEvent>)
 		}
 
 		if (control.getOnMouseReleased() == null) {
 			control.addEventHandler(MouseEvent.MOUSE_RELEASED,  { MouseEvent e ->
 				getBehavior().mouseReleased(e, behaveLikeButton)
-			} as EventHandler)
+			} as EventHandler<MouseEvent>)
 		}
 
 		/*

@@ -12,9 +12,9 @@ buildscript {
 
 plugins {
     id 'groovy'
-    id 'java'
-    id 'maven'
-    id 'org.openjfx.javafxplugin' version '0.0.9'
+    id 'java-library'
+    id 'maven-publish'
+    id 'org.openjfx.javafxplugin' version '0.0.14'
 }
 
 repositories {
@@ -22,40 +22,50 @@ repositories {
     maven { url System.getenv("ARTIFACTORY_URL_EXPOSED") }
 }
 
-uploadArchives {
-    repositories.mavenDeployer {
-        repository(url: System.getenv("ARTIFACTORY_URL_EXPOSED")) {
-            authentication(userName: System.getenv("ARTIFACTORY_USERNAME"), password: System.getenv("ARTIFACTORY_PASSWORD"))
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
         }
     }
+
+    repositories {
+		maven {
+			url "${System.getenv('ARTIFACTORY_URL_BASE')}/libs-${project.version.endsWith('-SNAPSHOT') ? 'snapshot' : 'release' }-local"
+			credentials {
+				username = System.getenv('ARTIFACTORY_USERNAME')
+				password = System.getenv('ARTIFACTORY_PASSWORD')
+			}
+		}
+	}
 }
 
-sourceCompatibility = 11
-targetCompatibility = 11
+sourceCompatibility = JavaVersion.VERSION_17
+targetCompatibility = JavaVersion.VERSION_17
 
 group 'com.spidasoftware'
-version '1.0.1-SNAPSHOT'
+version '1.0.2-SNAPSHOT'
 
-String springVersion = "4.2.6.RELEASE"
+String springVersion = "6.0.8"
 
 dependencies {
-    compile group: 'org.codehaus.groovy', name: 'groovy-all', version: '2.4.15'
-    compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.5'
-    compile group: 'commons-beanutils', name: 'commons-beanutils', version: '1.9.3'
-    compile group: 'org.springframework', name: 'spring-context', version:springVersion
-    compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.36'
-    compile group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.11'
-    testCompile group: 'org.objenesis', name: 'objenesis', version: '2.6'
-    testCompile('org.spockframework:spock-core:1.2-groovy-2.4'){
+    implementation group: 'org.apache.groovy', name: 'groovy-all', version: '4.0.12'
+    implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.12.0'
+    implementation group: 'commons-beanutils', name: 'commons-beanutils', version: '1.9.4'
+    implementation group: 'org.springframework', name: 'spring-context', version:springVersion
+    implementation group: 'org.slf4j', name: 'slf4j-api', version: '1.7.36'
+    implementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.11'
+    testImplementation group: 'org.objenesis', name: 'objenesis', version: '3.3'
+    testImplementation('org.spockframework:spock-core:2.3-groovy-4.0'){
         exclude(module: 'groovy-all')
     }
-    testRuntime('cglib:cglib-nodep:3.3.0')  // so spock can create mocks
+    testRuntimeOnly('net.bytebuddy:byte-buddy:1.14.2')  // so spock can create mocks
 }
 
 javafx {
-    version ="15.0.1"
+    version ="20.0.1"
     modules = [ 'javafx.controls', 'javafx.swing', 'javafx.fxml', 'javafx.graphics' ]
 }
 
-test.reports.html.destination = testReportDir // build/reports/tests
-test.reports.junitXml.destination = testResultsDir // build/test-results
+test.reports.html.outputLocation = testReportDir // build/reports/tests
+test.reports.junitXml.outputLocation = testResultsDir // build/test-results

@@ -92,7 +92,7 @@ class SpringProxyBuilder<T> extends HashMap<String, Object> implements Builder<T
 
 			// set the properties we have left after construction.
 			providedProperties.each {String property ->
-				Class<? extends Void> propertyType = getTypeForProperty(object, property)
+				Class<? extends Object> propertyType = getTypeForProperty(object, property)
 				Object propertyValue = get(property)
 				object[property] = BeanAdapter.coerce(propertyValue, propertyType)
 			}
@@ -110,7 +110,7 @@ class SpringProxyBuilder<T> extends HashMap<String, Object> implements Builder<T
 	 */
 	protected void findConstructors() throws Exception {
 		type.constructors.each {Constructor constructor ->
-			def arguments = [:]
+			Map<String,Argument> arguments = [:]
 			Class<?>[] types = constructor.getParameterTypes();
 			Annotation[][] annotations = constructor.getParameterAnnotations();
 			
@@ -141,7 +141,7 @@ class SpringProxyBuilder<T> extends HashMap<String, Object> implements Builder<T
 			} else {
 				// default constructor
 				this.@log.trace("Default constructor found")
-				this.@constructors.add([:])
+				this.@constructors.add([:] as Map<String,Argument>)
 			}
 		}
 	}
@@ -184,7 +184,7 @@ class SpringProxyBuilder<T> extends HashMap<String, Object> implements Builder<T
 		if (value == null) {
 			value = argument.defaultValue
 		}
-		return BeanAdapter.coerce(value, argument.type)
+		return BeanAdapter.coerce(value, argument.type as Class<? extends Object>)
 	}
 
 	/**
