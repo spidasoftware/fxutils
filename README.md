@@ -28,11 +28,11 @@ Creates a jar and runs all tests.
 
 Builds and runs all tests.
 
-    ./gradlew install
+    ./gradlew publishToMavenLocal
 
 Builds and installs a new jar in the local Maven repository.
 
-    ./gradlew uploadArchives
+    ./gradlew publish
 
 Builds and uploads a new jar to the remote Maven repository. Requires environment variables be set. Check version information in build.gradle before running.
 
