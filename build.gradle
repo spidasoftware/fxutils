@@ -31,7 +31,7 @@ publishing {
 
     repositories {
 		maven {
-			url "${System.getenv('ARTIFACTORY_URL_BASE')}/libs-${project.version.endsWith('-SNAPSHOT') ? 'snapshot' : 'release' }-local"
+			url System.getenv("ARTIFACTORY_URL_EXPOSED")
 			credentials {
 				username = System.getenv('ARTIFACTORY_USERNAME')
 				password = System.getenv('ARTIFACTORY_PASSWORD')
@@ -54,7 +54,9 @@ dependencies {
     implementation group: 'commons-beanutils', name: 'commons-beanutils', version: '1.9.4'
     implementation group: 'org.springframework', name: 'spring-context', version:springVersion
     implementation group: 'org.slf4j', name: 'slf4j-api', version: '1.7.36'
-    implementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.11'
+    implementation (group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.13') {
+        exclude(module: 'slf4j-api')
+    }
     testImplementation group: 'org.objenesis', name: 'objenesis', version: '3.3'
     testImplementation('org.spockframework:spock-core:2.3-groovy-4.0'){
         exclude(module: 'groovy-all')
