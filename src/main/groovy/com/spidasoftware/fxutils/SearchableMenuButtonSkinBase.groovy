@@ -137,7 +137,7 @@ abstract class SearchableMenuButtonSkinBase<C extends MenuButton, B extends Menu
 					combinedList.removeAll(change.removed)
 				}
 				if(change.wasAdded()) {
-					combinedList.addAll(change.from, change.addedSubList)
+					combinedList.addAll(change.from, change.addedSubList as List<MenuItem>)
 				}
 			}
 									 } as ListChangeListener)
