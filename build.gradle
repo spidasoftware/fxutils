@@ -54,7 +54,7 @@ dependencies {
     implementation group: 'commons-beanutils', name: 'commons-beanutils', version: '1.9.4'
     implementation group: 'org.springframework', name: 'spring-context', version:springVersion
     implementation group: 'org.slf4j', name: 'slf4j-api', version: '1.7.36'
-    implementation (group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.13') {
+    implementation (group: 'ch.qos.logback', name: 'logback-classic', version: '1.5.13') {
         exclude(module: 'slf4j-api')
     }
     testImplementation group: 'org.objenesis', name: 'objenesis', version: '3.3'
