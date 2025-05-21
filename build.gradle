@@ -44,7 +44,7 @@ sourceCompatibility = JavaVersion.VERSION_17
 targetCompatibility = JavaVersion.VERSION_17
 
 group 'com.spidasoftware'
-version '1.0.3-SNAPSHOT'
+version '1.0.3'
 
 String springVersion = "6.0.8"
 
