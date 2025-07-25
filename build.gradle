@@ -46,12 +46,12 @@ targetCompatibility = JavaVersion.VERSION_17
 group 'com.spidasoftware'
 version '1.0.4-SNAPSHOT'
 
-String springVersion = "6.0.8"
+String springVersion = "6.2.1"
 
 dependencies {
-    implementation group: 'org.apache.groovy', name: 'groovy-all', version: '4.0.23'
-    implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.12.0'
-    implementation group: 'commons-beanutils', name: 'commons-beanutils', version: '1.9.4'
+    implementation group: 'org.apache.groovy', name: 'groovy-all', version: '4.0.27'
+    implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.18.0'
+    implementation group: 'commons-beanutils', name: 'commons-beanutils', version: '1.11.0'
     implementation group: 'org.springframework', name: 'spring-context', version:springVersion
     implementation group: 'org.slf4j', name: 'slf4j-api', version: '2.0.16'
     implementation (group: 'ch.qos.logback', name: 'logback-classic', version: '1.5.13') {
@@ -65,7 +65,7 @@ dependencies {
 }
 
 javafx {
-    version ="21.0.4"
+    version ="21.0.8"
     modules = [ 'javafx.controls', 'javafx.swing', 'javafx.fxml', 'javafx.graphics' ]
 }
 
