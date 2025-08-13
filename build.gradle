@@ -46,7 +46,7 @@ targetCompatibility = JavaVersion.VERSION_17
 group 'com.spidasoftware'
 version '1.0.4-SNAPSHOT'
 
-String springVersion = "6.2.1"
+String springVersion = "6.2.9"
 
 dependencies {
     implementation group: 'org.apache.groovy', name: 'groovy-all', version: '4.0.27'
