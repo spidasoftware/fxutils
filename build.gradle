@@ -40,8 +40,10 @@ publishing {
 	}
 }
 
-sourceCompatibility = JavaVersion.VERSION_17
-targetCompatibility = JavaVersion.VERSION_17
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
 
 group 'com.spidasoftware'
 version '1.0.5-SNAPSHOT'
@@ -62,6 +64,7 @@ dependencies {
         exclude(module: 'groovy-all')
     }
     testRuntimeOnly('net.bytebuddy:byte-buddy:1.14.2')  // so spock can create mocks
+    testImplementation 'org.junit.platform:junit-platform-launcher:1.10.0'
 }
 
 javafx {
@@ -69,5 +72,17 @@ javafx {
     modules = [ 'javafx.controls', 'javafx.swing', 'javafx.fxml', 'javafx.graphics' ]
 }
 
-test.reports.html.outputLocation = testReportDir // build/reports/tests
-test.reports.junitXml.outputLocation = testResultsDir // build/test-results
+sourceSets {
+    test {
+        groovy {
+            srcDirs = ['src/test/groovy']
+        }
+    }
+}
+
+test {
+    useJUnitPlatform()
+}
+
+test.reports.html.outputLocation = file("$buildDir/reports/tests") // build/reports/tests
+test.reports.junitXml.outputLocation = file("$buildDir/test-results") // build/test-results
