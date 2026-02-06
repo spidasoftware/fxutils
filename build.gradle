@@ -52,11 +52,11 @@ String springVersion = "6.2.12"
 
 dependencies {
     implementation group: 'org.apache.groovy', name: 'groovy-all', version: '4.0.29'
-    implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.18.0'
+    implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.20.0'
     implementation group: 'commons-beanutils', name: 'commons-beanutils', version: '1.11.0'
     implementation group: 'org.springframework', name: 'spring-context', version:springVersion
-    implementation group: 'org.slf4j', name: 'slf4j-api', version: '2.0.16'
-    implementation (group: 'ch.qos.logback', name: 'logback-classic', version: '1.5.20') {
+    implementation group: 'org.slf4j', name: 'slf4j-api', version: '2.0.17'
+    implementation (group: 'ch.qos.logback', name: 'logback-classic', version: '1.5.26') {
         exclude(module: 'slf4j-api')
     }
     testImplementation group: 'org.objenesis', name: 'objenesis', version: '3.3'
@@ -64,7 +64,7 @@ dependencies {
         exclude(module: 'groovy-all')
     }
     testRuntimeOnly('net.bytebuddy:byte-buddy:1.14.2')  // so spock can create mocks
-    testImplementation 'org.junit.platform:junit-platform-launcher:1.10.0'
+    testImplementation 'org.junit.platform:junit-platform-launcher:1.13.1'
 }
 
 javafx {
