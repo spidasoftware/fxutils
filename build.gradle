@@ -44,7 +44,7 @@ java {
 group = 'com.spidasoftware'
 version = '1.0.5-SNAPSHOT'
 
-String springVersion = "6.2.12"
+String springVersion = "7.0.9"
 
 dependencies {
     implementation 'org.apache.groovy:groovy-all:4.0.29'
@@ -52,15 +52,15 @@ dependencies {
     implementation 'commons-beanutils:commons-beanutils:1.11.0'
     implementation "org.springframework:spring-context:${springVersion}"
     implementation 'org.slf4j:slf4j-api:2.0.17'
-    implementation ('ch.qos.logback:logback-classic:1.5.26') {
+    implementation ('ch.qos.logback:logback-classic:1.6.3') {
         exclude(module: 'slf4j-api')
     }
     testImplementation 'org.objenesis:objenesis:3.3'
-    testImplementation('org.spockframework:spock-core:2.3-groovy-4.0'){
+    testImplementation('org.spockframework:spock-core:2.4-groovy-4.0'){
         exclude(module: 'groovy-all')
     }
     testRuntimeOnly('net.bytebuddy:byte-buddy:1.14.2')  // so spock can create mocks
-    testImplementation 'org.junit.platform:junit-platform-launcher:1.13.1'
+    testImplementation 'org.junit.platform:junit-platform-launcher:1.14.2'
 }
 
 javafx {
