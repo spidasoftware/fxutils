@@ -42,7 +42,7 @@ java {
 }
 
 group = 'com.spidasoftware'
-version = '1.0.5-SNAPSHOT'
+version = '1.0.5'
 
 String springVersion = "7.0.9"
 
