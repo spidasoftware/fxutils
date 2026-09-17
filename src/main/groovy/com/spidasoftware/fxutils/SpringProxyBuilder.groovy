@@ -8,7 +8,6 @@ import javafx.util.Builder
 import org.apache.commons.beanutils.PropertyUtils
 import org.springframework.context.ApplicationContext
 
-import java.beans.Introspector
 import java.lang.annotation.Annotation
 import java.lang.reflect.Constructor
 
@@ -199,7 +198,7 @@ class SpringProxyBuilder<T> extends HashMap<String, Object> implements Builder<T
 	 * Get an instance from the spring context.
 	 */
 	protected T createInstance(Object[] args) throws Exception {
-		String name = Introspector.decapitalize(this.@type.simpleName)
+		String name = this.@type.simpleName.uncapitalize()
 		return this.@context.getBean(name, args) as T
 	}
 }
