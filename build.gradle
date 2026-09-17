@@ -37,35 +37,33 @@ publishing {
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_21
-    targetCompatibility = JavaVersion.VERSION_21
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
 }
 
 group = 'com.spidasoftware'
-version = '1.0.5'
+version = '1.0.6-SNAPSHOT'
 
 String springVersion = "7.0.9"
 
 dependencies {
-    implementation 'org.apache.groovy:groovy-all:4.0.29'
+    api 'org.apache.groovy:groovy:4.0.29'
+    api "org.springframework:spring-context:${springVersion}"
     implementation 'org.apache.commons:commons-lang3:3.20.0'
     implementation 'commons-beanutils:commons-beanutils:1.11.0'
-    implementation "org.springframework:spring-context:${springVersion}"
     implementation 'org.slf4j:slf4j-api:2.0.17'
-    implementation ('ch.qos.logback:logback-classic:1.6.3') {
-        exclude(module: 'slf4j-api')
-    }
-    testImplementation 'org.objenesis:objenesis:3.3'
-    testImplementation('org.spockframework:spock-core:2.4-groovy-4.0'){
-        exclude(module: 'groovy-all')
-    }
-    testRuntimeOnly('net.bytebuddy:byte-buddy:1.14.2')  // so spock can create mocks
-    testImplementation 'org.junit.platform:junit-platform-launcher:1.14.2'
+    testImplementation 'org.spockframework:spock-core:2.4-groovy-4.0'
+    testRuntimeOnly 'ch.qos.logback:logback-classic:1.6.3'
+    testRuntimeOnly 'org.objenesis:objenesis:3.4'   // so spock can mock classes
+    testRuntimeOnly 'net.bytebuddy:byte-buddy:1.18.13'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
 javafx {
     version = "21.0.9"
-    modules = [ 'javafx.controls', 'javafx.swing', 'javafx.fxml', 'javafx.graphics' ]
+    modules = [ 'javafx.controls', 'javafx.fxml' ]
+    configuration = 'api'
 }
 
 sourceSets {
