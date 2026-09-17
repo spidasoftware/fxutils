@@ -58,14 +58,6 @@ javafx {
     configuration = 'api'
 }
 
-sourceSets {
-    test {
-        groovy {
-            srcDirs = ['src/test/groovy']
-        }
-    }
-}
-
 test {
     useJUnitPlatform()
 }
