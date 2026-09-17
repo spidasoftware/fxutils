@@ -1,11 +1,3 @@
-buildscript {
-    repositories {
-        mavenLocal()
-        mavenCentral()
-        maven { url = System.getenv("ARTIFACTORY_URL_EXPOSED") }
-    }
-}
-
 plugins {
     id 'groovy'
     id 'java-library'
