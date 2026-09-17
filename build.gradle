@@ -61,6 +61,3 @@ javafx {
 test {
     useJUnitPlatform()
 }
-
-test.reports.html.outputLocation = file("${layout.buildDirectory.get().asFile.path}/reports/tests") // build/reports/tests
-test.reports.junitXml.outputLocation = file("${layout.buildDirectory.get().asFile.path}/test-results") // build/test-results
