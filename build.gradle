@@ -7,7 +7,6 @@ plugins {
 
 repositories {
     mavenCentral()
-    maven { url = System.getenv("ARTIFACTORY_URL_EXPOSED") }
 }
 
 publishing {
@@ -19,10 +18,10 @@ publishing {
 
     repositories {
 		maven {
-			url = System.getenv("ARTIFACTORY_URL_EXPOSED")
+			url = providers.environmentVariable("ARTIFACTORY_URL_EXPOSED")
 			credentials {
-				username = System.getenv('ARTIFACTORY_USERNAME')
-				password = System.getenv('ARTIFACTORY_PASSWORD')
+				username = providers.environmentVariable('ARTIFACTORY_USERNAME')
+				password = providers.environmentVariable('ARTIFACTORY_PASSWORD')
 			}
 		}
 	}
