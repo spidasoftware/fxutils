@@ -56,8 +56,8 @@ publishing {
         maven {
             url = providers.environmentVariable("ARTIFACTORY_URL_EXPOSED")
             credentials {
-                username = providers.environmentVariable('ARTIFACTORY_USERNAME')
-                password = providers.environmentVariable('ARTIFACTORY_PASSWORD')
+                username = providers.environmentVariable('ARTIFACTORY_USERNAME').orNull
+                password = providers.environmentVariable('ARTIFACTORY_PASSWORD').orNull
             }
         }
     }
