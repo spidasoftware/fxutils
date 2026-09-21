@@ -6,7 +6,6 @@ import groovy.util.logging.Slf4j
 import javafx.beans.NamedArg
 import javafx.util.Builder
 import org.apache.commons.beanutils.PropertyUtils
-import org.apache.commons.lang3.text.WordUtils
 import org.springframework.context.ApplicationContext
 
 import java.lang.annotation.Annotation
@@ -199,7 +198,7 @@ class SpringProxyBuilder<T> extends HashMap<String, Object> implements Builder<T
 	 * Get an instance from the spring context.
 	 */
 	protected T createInstance(Object[] args) throws Exception {
-		String name = WordUtils.uncapitalize(this.@type.simpleName)
+		String name = this.@type.simpleName.uncapitalize()
 		return this.@context.getBean(name, args) as T
 	}
 }
