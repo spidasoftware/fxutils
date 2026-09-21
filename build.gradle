@@ -5,26 +5,11 @@ plugins {
     id 'org.openjfx.javafxplugin' version '0.1.0'
 }
 
+group = 'com.spidasoftware'
+version = '1.0.6-SNAPSHOT'
+
 repositories {
     mavenCentral()
-}
-
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            from components.java
-        }
-    }
-
-    repositories {
-		maven {
-			url = providers.environmentVariable("ARTIFACTORY_URL_EXPOSED")
-			credentials {
-				username = providers.environmentVariable('ARTIFACTORY_USERNAME')
-				password = providers.environmentVariable('ARTIFACTORY_PASSWORD')
-			}
-		}
-	}
 }
 
 java {
@@ -34,9 +19,6 @@ java {
     withSourcesJar()
     withJavadocJar()
 }
-
-group = 'com.spidasoftware'
-version = '1.0.6-SNAPSHOT'
 
 String springVersion = "7.0.9"
 
@@ -59,6 +41,24 @@ javafx {
     configuration = 'api'
 }
 
-test {
+tasks.named('test') {
     useJUnitPlatform()
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+        }
+    }
+
+    repositories {
+        maven {
+            url = providers.environmentVariable("ARTIFACTORY_URL_EXPOSED")
+            credentials {
+                username = providers.environmentVariable('ARTIFACTORY_USERNAME')
+                password = providers.environmentVariable('ARTIFACTORY_PASSWORD')
+            }
+        }
+    }
 }
