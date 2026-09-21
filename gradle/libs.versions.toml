@@ -1,0 +1,27 @@
+[versions]
+groovy = "4.0.29"
+spring = "7.0.9"
+commons-lang3 = "3.20.0"
+commons-beanutils = "1.11.0"
+slf4j = "2.0.17"
+spock = "2.4-groovy-4.0"
+logback = "1.6.3"
+objenesis = "3.4"
+byte-buddy = "1.18.13"
+javafx = "21.0.9"
+openjfx-plugin = "0.1.0"
+
+[libraries]
+groovy = { module = "org.apache.groovy:groovy", version.ref = "groovy" }
+spring-context = { module = "org.springframework:spring-context", version.ref = "spring" }
+commons-lang3 = { module = "org.apache.commons:commons-lang3", version.ref = "commons-lang3" }
+commons-beanutils = { module = "commons-beanutils:commons-beanutils", version.ref = "commons-beanutils" }
+slf4j-api = { module = "org.slf4j:slf4j-api", version.ref = "slf4j" }
+spock-core = { module = "org.spockframework:spock-core", version.ref = "spock" }
+logback-classic = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
+objenesis = { module = "org.objenesis:objenesis", version.ref = "objenesis" }
+byte-buddy = { module = "net.bytebuddy:byte-buddy", version.ref = "byte-buddy" }
+junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher" }
+
+[plugins]
+javafx = { id = "org.openjfx.javafxplugin", version.ref = "openjfx-plugin" }
