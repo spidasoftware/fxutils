@@ -1,5 +1,5 @@
 [versions]
-groovy = "4.0.29"
+groovy = "6.0.0"
 spring = "7.0.9"
 commons-lang3 = "3.20.0"
 commons-beanutils = "1.11.0"
