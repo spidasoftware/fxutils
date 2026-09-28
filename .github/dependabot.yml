@@ -1,0 +1,21 @@
+version: 2
+updates:
+  - package-ecosystem: gradle
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 10
+    groups:
+      javafx:
+        patterns:
+          - "org.openjfx*"
+      spring:
+        patterns:
+          - "org.springframework*"
+      test:
+        patterns:
+          - "org.spockframework*"
+          - "ch.qos.logback*"
+          - "org.objenesis*"
+          - "net.bytebuddy*"
+          - "org.junit*"
