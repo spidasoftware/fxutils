@@ -24,7 +24,6 @@ dependencies {
     // versions are in libs.versions.toml
     api libs.groovy
     api libs.spring.context
-    implementation libs.commons.beanutils
     implementation libs.slf4j.api
     testImplementation libs.spock.core
     testRuntimeOnly libs.logback.classic
