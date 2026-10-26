@@ -1,7 +1,6 @@
 [versions]
 groovy = "4.0.29"
 spring = "7.0.9"
-commons-lang3 = "3.21.0"
 commons-beanutils = "1.11.0"
 slf4j = "2.0.20"
 spock = "2.5-groovy-4.0"
@@ -14,7 +13,6 @@ openjfx-plugin = "0.1.0"
 [libraries]
 groovy = { module = "org.apache.groovy:groovy", version.ref = "groovy" }
 spring-context = { module = "org.springframework:spring-context", version.ref = "spring" }
-commons-lang3 = { module = "org.apache.commons:commons-lang3", version.ref = "commons-lang3" }
 commons-beanutils = { module = "commons-beanutils:commons-beanutils", version.ref = "commons-beanutils" }
 slf4j-api = { module = "org.slf4j:slf4j-api", version.ref = "slf4j" }
 spock-core = { module = "org.spockframework:spock-core", version.ref = "spock" }

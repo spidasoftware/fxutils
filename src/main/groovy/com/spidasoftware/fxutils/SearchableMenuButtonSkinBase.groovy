@@ -36,7 +36,6 @@ import javafx.scene.layout.Region
 import javafx.scene.layout.StackPane
 import javafx.scene.layout.VBox
 import javafx.util.Callback
-import org.apache.commons.lang3.StringUtils
 
 import java.lang.reflect.Method
 import java.util.function.Predicate
@@ -536,7 +535,7 @@ abstract class SearchableMenuButtonSkinBase<C extends MenuButton, B extends Menu
 
 		@Override
 		boolean test(MenuItem item) {
-			if (StringUtils.isBlank(query) || defaultMenuItems.contains(item)) {
+			if ((query == null) || query.isBlank() || defaultMenuItems.contains(item)) {
 				return true
 			}
 
