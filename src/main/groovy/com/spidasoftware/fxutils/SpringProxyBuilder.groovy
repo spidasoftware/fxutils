@@ -5,7 +5,6 @@ import groovy.transform.CompileStatic
 import groovy.util.logging.Slf4j
 import javafx.beans.NamedArg
 import javafx.util.Builder
-import org.apache.commons.beanutils.PropertyUtils
 import org.springframework.context.ApplicationContext
 
 import java.lang.annotation.Annotation
@@ -190,7 +189,7 @@ class SpringProxyBuilder<T> extends HashMap<String, Object> implements Builder<T
 	 * Get the type to coerce a property to
 	 */
 	protected Class<?> getTypeForProperty(T bean, String property) throws Exception {
-		return PropertyUtils.getPropertyType(bean, property)
+		return new BeanAdapter(bean).getType(property)
 
 	}
 
