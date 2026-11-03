@@ -330,10 +330,12 @@ abstract class SearchableMenuButtonSkinBase<C extends MenuButton, B extends Menu
 			return
 		}
 
-		hidingForSizing = true // prevent the popup.showing listener from calling skinnable.hide() during teardown
-		if (popup?.isShowing()) {
-			popup.hide()
+		// Hide the control first so its showing state stays in sync with the popup; a replacement skin
+		// would otherwise start with isShowing() == true and no visible popup.
+		if (skinnable.isShowing()) {
+			skinnable.hide()
 		}
+		hide()
 
 		if (mousePressedHandler != null) {
 			skinnable.removeEventHandler(MouseEvent.MOUSE_PRESSED, mousePressedHandler)

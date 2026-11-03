@@ -502,7 +502,7 @@ public class TextAreaSkin extends TextInputControlSkin<TextArea> {
     }
 
     // TextInputControlSkin.class is used explicitly (not getClass().getSuperclass()) so subclasses of this skin work.
-    private Object getSuperPrivateField(String fieldName) {
+    protected Object getSuperPrivateField(String fieldName) {
         try {
             return ReflectionUtils.getPrivateFieldValue(TextInputControlSkin.class, this, fieldName);
         } catch (ReflectionException | InvocationTargetException e) {
@@ -510,7 +510,7 @@ public class TextAreaSkin extends TextInputControlSkin<TextArea> {
         }
     }
 
-    private Object getSuperPrivateGetter(String methodName) {
+    protected Object getSuperPrivateGetter(String methodName) {
         try {
             return ReflectionUtils.executePrivateMethod(TextInputControlSkin.class, this, methodName);
         } catch (ReflectionException | InvocationTargetException e) {
