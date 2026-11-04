@@ -18,7 +18,8 @@ class ReflectionUtils {
 	 * @throws InvocationTargetException
 	 */
 	static Object executePrivateMethod(Class clazz, Object object, String methodName, Object... args) throws InvocationTargetException, ReflectionException {
-		Method method = clazz.getDeclaredMethod(methodName)
+		Class[] parameterTypes = (args ?: []).collect { it?.getClass() } as Class[]
+		Method method = clazz.getDeclaredMethod(methodName, parameterTypes)
 		method.setAccessible(true)
 		return method.invoke(object, args)
 	}

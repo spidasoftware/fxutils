@@ -1,3 +1,32 @@
+/*
+ * Copyright (c) 2010, 2022, Oracle and/or its affiliates. All rights reserved.
+ * Portions Copyright (c) 2026 Bentley Systems, Incorporated. All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * This file contains code copied and modified from javafx.scene.control.skin.MenuButtonSkinBase and
+ * javafx.scene.control.skin.ComboBoxPopupControl in OpenJFX. Modified by Bentley Systems, Incorporated in 2026.
+ *
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License version 2 only, as
+ * published by the Free Software Foundation.  Oracle designates this
+ * particular file as subject to the "Classpath" exception as provided
+ * by Oracle in the LICENSE file that accompanied this code.
+ *
+ * This code is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+ * version 2 for more details (a copy is included in the LICENSE file that
+ * accompanied this code).
+ *
+ * You should have received a copy of the GNU General Public License version
+ * 2 along with this work; if not, write to the Free Software Foundation,
+ * Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
+ *
+ * Please contact Oracle, 500 Oracle Parkway, Redwood Shores, CA 94065 USA
+ * or visit www.oracle.com if you need additional information or have any
+ * questions.
+ */
+
 package com.spidasoftware.fxutils
 
 import com.sun.javafx.scene.control.LabeledImpl
@@ -79,6 +108,12 @@ abstract class SearchableMenuButtonSkinBase<C extends MenuButton, B extends Menu
 
 	protected B behavior = null
 
+	// Handlers and listeners registered by this skin, retained so dispose() can remove them.
+	private EventHandler<MouseEvent> mousePressedHandler
+	private EventHandler<MouseEvent> mouseReleasedHandler
+	private ListChangeListener<MenuItem> defaultMenuItemsListener
+	private ListChangeListener<MenuItem> itemsListener
+
 	protected Callback<ListView<MenuItem>, ListCell<MenuItem>> cellFactory = new Callback<ListView<MenuItem>, ListCell<MenuItem>>() {
 		@Override
 		ListCell<MenuItem> call(ListView<MenuItem> param) {
@@ -130,7 +165,7 @@ abstract class SearchableMenuButtonSkinBase<C extends MenuButton, B extends Menu
 		combinedList.addAll(defaultMenuItems)
 		combinedList.addAll(items)
 
-		defaultMenuItems.addListener({ Change<? extends MenuItem> change ->
+		defaultMenuItemsListener = { Change<? extends MenuItem> change ->
 			while(change.next()) {
 				if(change.wasRemoved()) {
 					combinedList.removeAll(change.removed)
@@ -139,9 +174,10 @@ abstract class SearchableMenuButtonSkinBase<C extends MenuButton, B extends Menu
 					combinedList.addAll(change.from, change.addedSubList as List<MenuItem>)
 				}
 			}
-									 } as ListChangeListener)
+		} as ListChangeListener<MenuItem>
+		defaultMenuItems.addListener(defaultMenuItemsListener)
 
-		items.addListener({ Change<? extends MenuItem> change ->
+		itemsListener = { Change<? extends MenuItem> change ->
 			while(change.next()) {
 				if(change.wasRemoved()) {
 					combinedList.removeAll(change.removed)
@@ -150,19 +186,22 @@ abstract class SearchableMenuButtonSkinBase<C extends MenuButton, B extends Menu
 					combinedList.addAll(defaultMenuItems.size() + change.from, change.addedSubList)
 				}
 			}
-						  } as ListChangeListener<MenuItem>)
+		} as ListChangeListener<MenuItem>
+		items.addListener(itemsListener)
 
 		// ---- Copied from MenuButtonSkinBase -------------------------------------------------------------------------
 		if (control.getOnMousePressed() == null) {
-			control.addEventHandler(MouseEvent.MOUSE_PRESSED, { MouseEvent e ->
-				getBehavior().mousePressed(e, behaveLikeButton)
-			} as EventHandler<MouseEvent>)
+			mousePressedHandler = { MouseEvent e ->
+				getBehavior()?.mousePressed(e, behaveLikeButton)
+			} as EventHandler<MouseEvent>
+			control.addEventHandler(MouseEvent.MOUSE_PRESSED, mousePressedHandler)
 		}
 
 		if (control.getOnMouseReleased() == null) {
-			control.addEventHandler(MouseEvent.MOUSE_RELEASED,  { MouseEvent e ->
-				getBehavior().mouseReleased(e, behaveLikeButton)
-			} as EventHandler<MouseEvent>)
+			mouseReleasedHandler = { MouseEvent e ->
+				getBehavior()?.mouseReleased(e, behaveLikeButton)
+			} as EventHandler<MouseEvent>
+			control.addEventHandler(MouseEvent.MOUSE_RELEASED, mouseReleasedHandler)
 		}
 
 		/*
@@ -293,6 +332,11 @@ abstract class SearchableMenuButtonSkinBase<C extends MenuButton, B extends Menu
 						   }, control.focusedProperty())
 
 		bindUnidirectional({
+							   label.setMnemonicParsing(getSkinnable().isMnemonicParsing())
+							   getSkinnable().requestLayout()
+						   }, control.mnemonicParsingProperty())
+
+		bindUnidirectional({
 							   if (!hidingForSizing && !popup.isShowing() && getSkinnable().isShowing()) {
 								   // Popup was dismissed. Maybe user clicked outside or typed ESCAPE.
 								   // Make sure button is in sync.
@@ -303,6 +347,52 @@ abstract class SearchableMenuButtonSkinBase<C extends MenuButton, B extends Menu
 	}
 
 	protected abstract void bindUnidirectional(Closure viewSetter, ReadOnlyProperty property)
+
+	/**
+	 * Removes everything this skin registered directly on the control and the item lists, and disposes the
+	 * behavior that was passed to the constructor (the skin is its sole owner, matching MenuButtonSkin upstream).
+	 * Listeners registered through {@link #bindUnidirectional} are owned by the subclass and must be released there.
+	 */
+	@Override
+	void dispose() {
+		C skinnable = getSkinnable()
+		if (skinnable == null) {
+			return
+		}
+
+		// Hide the control first so its showing state stays in sync with the popup; a replacement skin
+		// would otherwise start with isShowing() == true and no visible popup.
+		if (skinnable.isShowing()) {
+			skinnable.hide()
+		}
+		hide()
+
+		if (mousePressedHandler != null) {
+			skinnable.removeEventHandler(MouseEvent.MOUSE_PRESSED, mousePressedHandler)
+		}
+		if (mouseReleasedHandler != null) {
+			skinnable.removeEventHandler(MouseEvent.MOUSE_RELEASED, mouseReleasedHandler)
+		}
+		defaultMenuItems.removeListener(defaultMenuItemsListener)
+		items.removeListener(itemsListener)
+
+		textField.onKeyPressed = null
+		textField.onMouseEntered = null
+		textField.onMouseExited = null
+		listView.setItems(FXCollections.emptyObservableList())
+
+		super.dispose()
+
+		if (behavior != null) {
+			behavior.dispose()
+			behavior = null
+		}
+
+		if (popup != null) {
+			popup.setSkin(null)
+			popup = null
+		}
+	}
 
 	/**
 	 * We want to select the first item that isn't a default item on show() and when filtering.
@@ -491,22 +581,22 @@ abstract class SearchableMenuButtonSkinBase<C extends MenuButton, B extends Menu
 	// ---- Copied from com.sun.javafx.scene.control.skin.MenuButtonSkinBase with reconfigurePopup() call added --------
 	@Override protected double computeMinWidth(double height, double topInset, double rightInset, double bottomInset, double leftInset) {
 		reconfigurePopup()
-		return leftInset + label.minWidth(height)+ snapSize(arrowButton.minWidth(height))+ rightInset
+		return leftInset + label.minWidth(height)+ snapSizeX(arrowButton.minWidth(height))+ rightInset
 	}
 
 	@Override protected double computeMinHeight(double width, double topInset, double rightInset, double bottomInset, double leftInset) {
 		reconfigurePopup()
-		return topInset + Math.max(label.minHeight(width), snapSize(arrowButton.minHeight(-1)))+ bottomInset
+		return topInset + Math.max(label.minHeight(width), snapSizeY(arrowButton.minHeight(-1)))+ bottomInset
 	}
 
 	@Override protected double computePrefWidth(double height, double topInset, double rightInset, double bottomInset, double leftInset) {
 		reconfigurePopup()
-		return leftInset+ label.prefWidth(height)+ snapSize(arrowButton.prefWidth(height))+ rightInset
+		return leftInset+ label.prefWidth(height)+ snapSizeX(arrowButton.prefWidth(height))+ rightInset
 	}
 
 	@Override protected double computePrefHeight(double width, double topInset, double rightInset, double bottomInset, double leftInset) {
 		reconfigurePopup()
-		return topInset + Math.max(label.prefHeight(width), snapSize(arrowButton.prefHeight(-1)))+ bottomInset
+		return topInset + Math.max(label.prefHeight(width), snapSizeY(arrowButton.prefHeight(-1)))+ bottomInset
 	}
 
 	@Override protected double computeMaxWidth(double height, double topInset, double rightInset, double bottomInset, double leftInset) {
@@ -520,7 +610,7 @@ abstract class SearchableMenuButtonSkinBase<C extends MenuButton, B extends Menu
 	}
 
 	@Override protected void layoutChildren(final double x, final double y, final double w, final double h) {
-		final double arrowButtonWidth = snapSize(arrowButton.prefWidth(-1))
+		final double arrowButtonWidth = snapSizeX(arrowButton.prefWidth(-1))
 		label.resizeRelocate(x, y, w - arrowButtonWidth, h)
 		arrowButton.resizeRelocate(x+(w-arrowButtonWidth), y, arrowButtonWidth, h)
 	}
