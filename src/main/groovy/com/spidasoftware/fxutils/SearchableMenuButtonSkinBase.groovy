@@ -320,7 +320,8 @@ abstract class SearchableMenuButtonSkinBase<C extends MenuButton, B extends Menu
 	protected abstract void bindUnidirectional(Closure viewSetter, ReadOnlyProperty property)
 
 	/**
-	 * Removes everything this skin registered directly on the control and the item lists.
+	 * Removes everything this skin registered directly on the control and the item lists, and disposes the
+	 * behavior that was passed to the constructor (the skin is its sole owner, matching MenuButtonSkin upstream).
 	 * Listeners registered through {@link #bindUnidirectional} are owned by the subclass and must be released there.
 	 */
 	@Override
@@ -352,6 +353,11 @@ abstract class SearchableMenuButtonSkinBase<C extends MenuButton, B extends Menu
 		listView.setItems(FXCollections.emptyObservableList())
 
 		super.dispose()
+
+		if (behavior != null) {
+			behavior.dispose()
+			behavior = null
+		}
 
 		if (popup != null) {
 			popup.setSkin(null)
