@@ -46,6 +46,14 @@ publishing {
     publications {
         mavenJava(MavenPublication) {
             from components.java
+            pom {
+                licenses {
+                    license {
+                        name = 'GNU General Public License, version 2, with the Classpath Exception'
+                        url = 'https://openjdk.org/legal/gplv2+ce.html'
+                    }
+                }
+            }
         }
     }
 

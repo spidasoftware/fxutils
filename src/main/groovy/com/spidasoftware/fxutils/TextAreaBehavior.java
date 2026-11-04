@@ -1,6 +1,10 @@
 /*
  * Copyright (c) 2011, 2022, Oracle and/or its affiliates. All rights reserved.
+ * Portions Copyright (c) 2026 Bentley Systems, Incorporated. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * This file is a modified copy of com.sun.javafx.scene.control.behavior.TextAreaBehavior from OpenJFX.
+ * Modified by Bentley Systems, Incorporated in 2026; see the class javadoc for details.
  *
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
